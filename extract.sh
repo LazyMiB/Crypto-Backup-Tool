@@ -27,13 +27,14 @@ else
   password="$PASSWORD"
 fi
 
-echo "Generate hash'es..."
+echo "Generate hashes..."
 
 zip_pwd=$(echo -n "$password" | sha512sum | cut -f 1 -d " ")
-gpg_pwd=$(echo "$zip_pwd" | sha512sum | cut -f 1 -d " ")
+zip_pwd=$(echo "$zip_pwd" $(echo -n "$password") "$zip_pwd" | sha512sum | cut -f 1 -d " ")
+gpg_pwd=$(echo "$zip_pwd" $(echo -n "$password") "$zip_pwd"  | sha512sum | cut -f 1 -d " ")
 
 for i in {1..1000}; do
-  zip_pwd=$(echo -n "$zip_pwd" | sha512sum | cut -f 1 -d " ")
+  zip_pwd=$(echo "$zip_pwd" | sha512sum | cut -f 1 -d " ")
   gpg_pwd=$(echo "$gpg_pwd" | sha512sum | cut -f 1 -d " ")
 done
 

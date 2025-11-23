@@ -3,9 +3,9 @@
 **Features**:
 
 * double encrypt: by zip and by gnupg
-* generate hash'es from given password with 1000 iterations, it's prevent easy brute force
+* generate hashes from given password with 1000 iterations, it's prevent easy brute force
 * once setup: just use symlinks in backup directory
-* ready for cron: just use env variable
+* ready for cron: just use an env variable
 * simple for code review and modify
 
 Dependencies:
