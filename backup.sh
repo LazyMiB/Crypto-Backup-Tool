@@ -31,11 +31,13 @@ zip_pwd=$(echo "$zip_pwd" $(echo -n "$password") "$zip_pwd" | sha512sum | cut -f
 gpg_pwd=$(echo "$zip_pwd" $(echo -n "$password") "$zip_pwd"  | sha512sum | cut -f 1 -d " ")
 
 for i in {1..1000}; do
-  zip_pwd=$(echo "$zip_pwd" | sha512sum | cut -f 1 -d " ")
-  gpg_pwd=$(echo "$gpg_pwd" | sha512sum | cut -f 1 -d " ")
+  zip_pwd=$(echo "$zip_pwd" "$gpg_pwd" | sha512sum | cut -f 1 -d " ")
+  gpg_pwd=$(echo "$gpg_pwd" "$zip_pwd" | sha512sum | cut -f 1 -d " ")
 done
 
 echo "Backuping..."
 
-zip -P "$zip_pwd" -9 -r - "$1"| gpg --batch --passphrase "$gpg_pwd" -c > "$name".zip.gpg
+zip -P "$zip_pwd" -9 -r - "$1" \
+  | gpg --s2k-digest-algo SHA512 --s2k-count 65011712 --s2k-cipher-algo AES256 --batch --passphrase "$gpg_pwd" -c \
+  > "$name".zip.gpg
 echo "Done. Backup name: " "$name".zip.gpg
