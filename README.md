@@ -1,9 +1,11 @@
 # Crypto backup tool
 
-**Features**:
+**IT'S JUST A DEMONSTRATION. If you want to use it for something important, you need to conduct an audit.**
 
-* double encrypt: by zip and by gnupg
-* generate hashes from given password with 2000 iterations, it's prevent easy brute force
+Features:
+
+* double/triple encrypt: by `zip`, by `gnupg`, (optional) and by `scrypt`
+* generate hashes from given password with 2-3k rounds, it's prevent easy brute force
 * once setup: just use symlinks in backup directory
 * ready for cron: just use an env variable
 * simple for code review and modify
@@ -15,21 +17,30 @@ Dependencies:
 * unzip
 * gnupg
 * coreutils
+* (optional) scrypt
 
 ## Usage
+
+Options:
+
+* `-s` for use `scrypt` in onion
 
 ### Backup
 
 ```sh
 ./backup.sh /dir/to/backup
+# or
+./backup.sh /dir/to/backup -s
 ```
 
-Its will be save backup into `backup.zip.gpg`.
+Its will be save backup into `backup.zip.gpg` or `backup.zip.gpg.scrypt`.
 
 ### Extract
 
 ```sh
 ./extract.sh backup.zip.gpg /dir/to/extract
+# or
+./extract.sh backup.zip.gpg.scrypt /dir/to/extract -s
 ```
 
 Its will be extract backuped files to the given path.

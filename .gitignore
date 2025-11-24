@@ -2,3 +2,4 @@ backup
 backup-extracted
 *.zip
 *.gpg
+*.scrypt
